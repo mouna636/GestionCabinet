@@ -1,31 +1,26 @@
 package com.projet.GestionCabinet.Entities;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
-public class Cabinet {
+public class Cabinet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
     @Column
-    private String nom_cabinet;
+    private String name;
     @Column
     private String localisation;
-
-    public Cabinet(Long id, String nom_cabinet, String localisation) {
-        this.id = id;
-        this.nom_cabinet = nom_cabinet;
-        this.localisation = localisation;
-    }
 
 }

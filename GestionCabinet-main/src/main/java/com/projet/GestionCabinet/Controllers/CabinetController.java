@@ -2,7 +2,6 @@ package com.projet.GestionCabinet.Controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.projet.GestionCabinet.Entities.Cabinet;
 import com.projet.GestionCabinet.Services.CabinetService;
@@ -39,8 +39,8 @@ public class CabinetController {
     }
 
     @PutMapping("/{id}")
-    public Cabinet updateCabinet(@PathVariable Integer id, @RequestBody Cabinet cabinet) {
-        return cabinetService.update(cabinet);
+    public Cabinet updateCabinet(@PathVariable Long id, @RequestBody Cabinet cabinet) {
+        return cabinetService.update(id, cabinet);
     }
 
     @DeleteMapping("/{id}")
@@ -49,4 +49,13 @@ public class CabinetController {
 
     }
 
+    @GetMapping("/search")
+    public List<Cabinet> searchCabinetByName(@RequestParam String name) {
+        return cabinetService.findCabinetByName(name);
+    }
+
+    @GetMapping("/searchl")
+    public List<Cabinet> searchCabinetByLocalisation(@RequestParam String localisation) {
+        return cabinetService.findCabinetByLocalisation(localisation);
+    }
 }

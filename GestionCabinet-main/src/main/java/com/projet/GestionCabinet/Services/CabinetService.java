@@ -5,14 +5,18 @@ import java.util.List;
 import com.projet.GestionCabinet.Entities.Cabinet;
 
 public interface CabinetService {
+
     public List<Cabinet> getAllCabinets();
 
     public Cabinet findById(Long id);
 
-    public Cabinet update(Cabinet cabinet);
+    public Cabinet update(Long id, Cabinet cabinet);
 
     public Cabinet add(Cabinet cabinet);
 
     public void delete(Long id);
 
+    public List<Cabinet> findCabinetByName(String name);
+
+    public List<Cabinet> findCabinetByLocalisation(String localisation);
 }
