@@ -21,6 +21,9 @@ public class Cabinet implements Serializable {
     @Column
     private String name;
     @Column
-    private String localisation;
-
+    private String adresse;
+    @Column
+    private String horaires;
+    @Column
+    private String telephone;
 }

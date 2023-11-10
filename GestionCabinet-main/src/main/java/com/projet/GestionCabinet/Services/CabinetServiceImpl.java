@@ -29,15 +29,16 @@ public class CabinetServiceImpl implements CabinetService {
 
     @Override
     public Cabinet update(Long id, Cabinet cabinet) {
-        // Vérifiez si le cabinet existe avant de le mettre à jour
         Optional<Cabinet> existingCabinet = cabinetRepository.findById(id);
         if (existingCabinet.isPresent()) {
             Cabinet updatedCabinet = existingCabinet.get();
             updatedCabinet.setName(cabinet.getName());
-            updatedCabinet.setLocalisation(cabinet.getLocalisation());
+            updatedCabinet.setAdresse(cabinet.getAdresse());
+            updatedCabinet.setHoraires(cabinet.getHoraires());
+            updatedCabinet.setTelephone(cabinet.getTelephone());
             return cabinetRepository.save(updatedCabinet);
         } else {
-            return null; // Ou lancez une exception si le cabinet n'est pas trouvé
+            return null;
         }
     }
 
@@ -48,7 +49,7 @@ public class CabinetServiceImpl implements CabinetService {
 
     @Override
     public void delete(Long id) {
-    
+
         cabinetRepository.deleteById(id);
     }
 
