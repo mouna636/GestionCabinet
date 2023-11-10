@@ -59,7 +59,7 @@ public class CabinetServiceImpl implements CabinetService {
     }
 
     @Override
-    public List<Cabinet> findCabinetByLocalisation(String localisation) {
-        return cabinetRepository.findByLocalisation(localisation);
+    public List<Cabinet> findCabinetByAdresse(String adresse) {
+        return cabinetRepository.findByAdresse(adresse);
     }
 }

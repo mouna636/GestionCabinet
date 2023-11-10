@@ -18,5 +18,5 @@ public interface CabinetService {
 
     public List<Cabinet> findCabinetByName(String name);
 
-    public List<Cabinet> findCabinetByLocalisation(String localisation);
+    public List<Cabinet> findCabinetByAdresse(String adresse);
 }

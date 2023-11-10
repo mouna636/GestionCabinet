@@ -13,5 +13,5 @@ public interface CabinetRepository extends JpaRepository<Cabinet, Long> {
 
     List<Cabinet> findByName(String name);
 
-    List<Cabinet> findByLocalisation(String localisation);
+    List<Cabinet> findByAdresse(String adresse);
 }
