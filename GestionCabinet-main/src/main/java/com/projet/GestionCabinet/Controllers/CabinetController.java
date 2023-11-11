@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projet.GestionCabinet.Entities.Cabinet;
 import com.projet.GestionCabinet.Services.CabinetService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/cabinets")
 
@@ -54,8 +54,8 @@ public class CabinetController {
         return cabinetService.findCabinetByName(name);
     }
 
-    @GetMapping("/searchl")
-    public List<Cabinet> searchCabinetByLocalisation(@RequestParam String localisation) {
-        return cabinetService.findCabinetByLocalisation(localisation);
+    @GetMapping("/searchadr")
+    public List<Cabinet> searchCabinetByAdresse(@RequestParam String adresse) {
+        return cabinetService.findCabinetByAdresse(adresse);
     }
 }
