@@ -15,7 +15,7 @@ public class InfirmierServiceImpl implements InfirmierService {
     private InfirmierRepository infirmierRepository;
 
     @Override
-    public List<Infirmier> getAllInfirmier() {
+    public List<Infirmier> getAllInfirmiers() {
         return infirmierRepository.findAll();
     }
 
@@ -35,6 +35,14 @@ public class InfirmierServiceImpl implements InfirmierService {
         infirmier.setNom(updatedInfirmier.getNom());
         infirmier.setPrenom(updatedInfirmier.getPrenom());
         infirmier.setTelephone(updatedInfirmier.getTelephone());
+        /* infirmier.setNaissance(updatedInfirmier.getNaissance()); */
+        infirmier.setSexe(updatedInfirmier.getSexe());
+        infirmier.setCin(updatedInfirmier.getCin());
+        infirmier.setAdresse(updatedInfirmier.getAdresse());
+        infirmier.setEmail(updatedInfirmier.getEmail());
+        infirmier.setDiplome(updatedInfirmier.getDiplome());
+        /* infirmier.setDateEmbauche(updatedInfirmier.getDateEmbauche()); */
+        /* infirmier.setSalaire(updatedInfirmier.getSalaire()); */
         return infirmierRepository.save(infirmier);
     }
 
