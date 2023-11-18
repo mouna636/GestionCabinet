@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projet.GestionCabinet.Entities.Consultation;
 import com.projet.GestionCabinet.Services.ConsultationServiceImpl;
 
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/consultations")
@@ -33,6 +32,11 @@ public class ConsultationController {
     @GetMapping("/{id}")
     public Consultation getConsultationById(@PathVariable long id) {
         return consultationService.findById(id);
+    }
+
+    @GetMapping("/patient/{id}")
+    public List<Consultation> getConsultationsByPatientId(@PathVariable long id) {
+        return consultationService.getConsultationsByPatientId(id);
     }
 
     @PostMapping

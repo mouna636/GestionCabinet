@@ -9,7 +9,7 @@ import com.projet.GestionCabinet.DAO.ConsultationRepository;
 import com.projet.GestionCabinet.Entities.Consultation;
 
 @Service
-public class ConsultationServiceImpl implements ConsultationService{
+public class ConsultationServiceImpl implements ConsultationService {
 
     @Autowired
     private ConsultationRepository consRep;
@@ -17,7 +17,7 @@ public class ConsultationServiceImpl implements ConsultationService{
     @Override
     public List<Consultation> getAllConsultations() {
         return consRep.findAll();
-       
+
     }
 
     @Override
@@ -28,17 +28,24 @@ public class ConsultationServiceImpl implements ConsultationService{
     @Override
     public Consultation update(Long id, Consultation Consultation) {
         Consultation consult = consRep.findById(id).get();
-        if(consult != null){
-        consult.setDate_consultation(Consultation.getDate_consultation());
-        // consult.setDebut_consultation(Consultation.getDebut_consultation());
-        // consult.setFin_consultation(Consultation.getFin_consultation());
-        consult.setSynthese(Consultation.getSynthese());
-        consult.setAct(Consultation.getAct());
-        if (consult.getPatient() != null) {
-            consult.setPatient(consult.getPatient());
-          }
-        return consRep.save(consult);
-        } else return null;
+        if (consult != null) {
+            consult.setDate_consultation(Consultation.getDate_consultation());
+            consult.setMotif(Consultation.getMotif());
+            consult.setDiagnostique(Consultation.getDiagnostique());
+            consult.setResExamClinique(Consultation.getResExamClinique());
+            consult.setPoids(Consultation.getPoids());
+            consult.setTaille(Consultation.getTaille());
+            consult.setImc(Consultation.getImc());
+            consult.setTemperature(Consultation.getTemperature());
+            consult.setFreqCardiaque(Consultation.getFreqCardiaque());
+            consult.setPressionArterielle(Consultation.getPressionArterielle());
+            consult.setObservation(Consultation.getObservation());
+            if (consult.getPatient() != null) {
+                consult.setPatient(consult.getPatient());
+            }
+            return consRep.save(consult);
+        } else
+            return null;
 
     }
 
@@ -52,5 +59,9 @@ public class ConsultationServiceImpl implements ConsultationService{
         consRep.deleteById(id);
     }
 
-    
+    @Override
+    public List<Consultation> getConsultationsByPatientId(Long id) {
+        return consRep.getConsultationsByPatientId(id);
+    }
+
 }

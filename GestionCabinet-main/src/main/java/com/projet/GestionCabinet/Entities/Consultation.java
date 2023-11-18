@@ -25,8 +25,17 @@ public class Consultation implements Serializable {
     private Date date_consultation;
     // private Date debut_consultation;
     // private Date fin_consultation; 
-    private String Synthese;
-    private String act;
+    private String motif;
+    private String diagnostique;
+    private String resExamClinique;
+    private String poids;
+    private String taille;
+    private String imc;
+    private String temperature;
+    private String freqCardiaque;
+    private String pressionArterielle;
+    private String observation;
+
 
     @ManyToOne
     private Patient patient;
