@@ -4,40 +4,46 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.projet.GestionCabinet.DAO.HoraireRepository;
+
 import com.projet.GestionCabinet.Entities.HoraireTravail;
 
 @Service
-public class HoraireService {
+public class HoraireService implements HoraireServiceImpl {
 
   @Autowired
-  private HoraireRepository horaireRep;
+  private HoraireRepository horaireRepository;
 
-  
+  @Override
   public List<HoraireTravail> getAllHoraires() {
-    return horaireRep.findAll();
+    return horaireRepository.findAll();
   }
 
-  
+  @Override
   public HoraireTravail addHoraire(HoraireTravail horaireTravail) {
-    return horaireRep.save(horaireTravail);
+    return horaireRepository.save(horaireTravail);
   }
 
-  
+  @Override
   public HoraireTravail getHoraire(Long id) {
-    return horaireRep.findById(id).orElse(null);
+    return horaireRepository.findById(id).orElse(null);
   }
 
-  
+  @Override
   public HoraireTravail updateHoraire(Long id, HoraireTravail horaireTravail) {
-    HoraireTravail existingHoraire = horaireRep.findById(id).orElse(null);
+    HoraireTravail existingHoraire = horaireRepository.findById(id).orElse(null);
     existingHoraire.setId(id);
-    return horaireRep.save(existingHoraire);
+    return horaireRepository.save(existingHoraire);
   }
 
-  
-  public void deleteHoraire(Long id) {
-    horaireRep.deleteById(id);
+  @Override
+  public List<HoraireTravail> getHoraireTravailByCabinetId(Long id) {
+    return horaireRepository.getHoraireTravailByCabinetId(id);
   }
+
+  @Override
+  public void deleteHoraire(Long id) {
+    horaireRepository.deleteById(id);
+  }
+
 }

@@ -1,35 +1,35 @@
 package com.projet.GestionCabinet.Entities;
 
 import java.io.Serializable;
-import java.util.Date;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @Setter
+@Getter
 @Entity
 public class HoraireTravail implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
-    private Date date;
+    @Column
     private String heureDebut;
+    @Column
     private String heureFin;
+    @Column
     private String jourSemaine;
 
-    public HoraireTravail(Date date, String heureDebut, String heureFin, String jourSemaine) {
-        this.date = date;
-        this.heureDebut = heureDebut;
-        this.heureFin = heureFin;
-        this.jourSemaine = jourSemaine;
-    }
-
+    @ManyToOne
+    private Cabinet cabinet;
 }
