@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projet.GestionCabinet.Entities.Consultation;
 import com.projet.GestionCabinet.Entities.OrdonnancetTraitement;
 import com.projet.GestionCabinet.Services.OrdonnancetTraitementServiceImpl;
 
@@ -21,7 +22,7 @@ import com.projet.GestionCabinet.Services.OrdonnancetTraitementServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/ordonnancetTraitement")
+@RequestMapping("/ordonnanceTraitement")
 public class OrdonnancetTraitementController {
 
     @Autowired
@@ -52,6 +53,14 @@ public class OrdonnancetTraitementController {
     public void deleteOrdonnancetTraitement(@PathVariable Long id) {
         ordonnancetTraitementService.deleteOrdonnancetTraitement(id);
    }
+
+   //ajout
+    @GetMapping("/patient/{id}")
+    public List<OrdonnancetTraitement> getOrdonnanceByPatientId(@PathVariable long id){
+        return ordonnancetTraitementService.getOrdonnanceByPatientId(id);
+    }
+
+
 
     
 

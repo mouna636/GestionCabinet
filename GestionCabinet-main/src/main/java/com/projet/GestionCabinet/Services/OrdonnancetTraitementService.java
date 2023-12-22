@@ -16,5 +16,9 @@ public interface OrdonnancetTraitementService {
     public OrdonnancetTraitement updateOrdonnancetTraitement(long id, OrdonnancetTraitement ordonnancetTraitement);
 
     public void deleteOrdonnancetTraitement(Long id);
+
+
+    //ajout
+    public List<OrdonnancetTraitement> getOrdonnanceByPatientId(Long id);
     
 }

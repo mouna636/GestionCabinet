@@ -9,4 +9,6 @@ import com.projet.GestionCabinet.Entities.Consultation;
 public interface ConsultationRepository extends JpaRepository<Consultation, Long> {
 
     List<Consultation> getConsultationsByPatientId(Long id);
+
+    
 }
