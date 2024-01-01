@@ -2,21 +2,18 @@ package com.projet.GestionCabinet.Entities;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projet.GestionCabinet.DTO.CabinetForm;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,29 +38,36 @@ public class Cabinet implements Serializable {
     private String telephone;
     @Column
     private String matriculefiscale;
-    /*
-     * @Column
-     * private String image;
-     */
     @Column
     private String ville;
+    @Column(length = 10485760) // Exemple : 10 Mo (10 * 1024 * 1024)
+    @Lob
+    private byte[] image;
 
     /*
-     * @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+     * @OneToOne(cascade = CascadeType.MERGE)
      * 
-     * @JoinTable(name = "cabinetImages", joinColumns = { @JoinColumn(name =
-     * "cabinet_id") }, inverseJoinColumns = {
-     * 
-     * @JoinColumn(name = "image_id") })
-     * private Set<ImageModel> cabinetImages;
+     * @JoinColumn(name = "user_id", referencedColumnName = "id")
+     * private User user;
      */
     @JsonIgnore
     @OneToMany(mappedBy = "cabinet")
     private List<HoraireTravail> horaires;
 
-    /*
-     * @OneToMany(mappedBy = "cabinet", cascade = CascadeType.ALL, fetch =
-     * FetchType.LAZY)
-     * private List<User> users;
-     */
+    @JsonIgnore
+    public CabinetForm getCabinet() {
+        CabinetForm cabinetForm = new CabinetForm();
+        cabinetForm.setId(id);
+        cabinetForm.setAdresse(adresse);
+        cabinetForm.setHoraires(horaires);
+        cabinetForm.setName(name);
+        cabinetForm.setSpecialite(specialite);
+        cabinetForm.setTelephone(telephone);
+        cabinetForm.setMatriculefiscale(matriculefiscale);
+        cabinetForm.setVille(ville);
+        cabinetForm.setReturnedImage(image);
+        return cabinetForm;
+
+    }
+
 }

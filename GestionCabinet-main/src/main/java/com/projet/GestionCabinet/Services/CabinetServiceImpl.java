@@ -1,17 +1,24 @@
 package com.projet.GestionCabinet.Services;
 
-import java.util.ArrayList;
+import java.io.IOException;
+
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projet.GestionCabinet.DAO.CabinetRepository;
 import com.projet.GestionCabinet.DAO.HoraireRepository;
+
 import com.projet.GestionCabinet.DTO.CabinetForm;
 import com.projet.GestionCabinet.Entities.Cabinet;
 import com.projet.GestionCabinet.Entities.HoraireTravail;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class CabinetServiceImpl implements CabinetService {
     @Autowired
@@ -21,20 +28,8 @@ public class CabinetServiceImpl implements CabinetService {
 
     @Override
     public List<CabinetForm> getAllCabinets() {
-        List<CabinetForm> ListCabinet = new ArrayList<>();
-        List<Cabinet> cabinets = cabinetRepository.findAll();
-        for (Cabinet cabinet : cabinets) {
-            CabinetForm cabinetForm = new CabinetForm();
-            cabinetForm.setName(cabinet.getName());
-            cabinetForm.setAdresse(cabinet.getAdresse());
-            cabinetForm.setMatriculefiscale(cabinet.getMatriculefiscale());
-            cabinetForm.setSpecialite(cabinet.getSpecialite());
-            cabinetForm.setTelephone(cabinetForm.getTelephone());
-            cabinetForm.setVille(cabinet.getVille());
-            cabinetForm.setHoraires(cabinet.getHoraires());
-            ListCabinet.add(cabinetForm);
-        }
-        return ListCabinet;
+        return cabinetRepository.findAll().stream().map(Cabinet::getCabinet).collect(Collectors.toList());
+
     }
 
     @Override
@@ -45,33 +40,53 @@ public class CabinetServiceImpl implements CabinetService {
     }
 
     @Override
-    public Cabinet update(Long id, Cabinet cabinet) {
-        Optional<Cabinet> existingCabinet = cabinetRepository.findById(id);
-        if (existingCabinet.isPresent()) {
-            Cabinet updatedCabinet = existingCabinet.get();
-            updatedCabinet.setName(cabinet.getName());
-            updatedCabinet.setAdresse(cabinet.getAdresse());
-            updatedCabinet.setSpecialite(cabinet.getSpecialite());
-            updatedCabinet.setTelephone(cabinet.getTelephone());
-            updatedCabinet.setMatriculefiscale(cabinet.getMatriculefiscale());
+    public Cabinet modifierCabinet(Long id, CabinetForm cabinetForm) throws IOException {
+        Optional<Cabinet> optionalCabinet = cabinetRepository.findById(id);
 
-            updatedCabinet.setVille(cabinet.getVille());
+        if (optionalCabinet.isPresent()) {
+            Cabinet cabinet = optionalCabinet.get();
+            cabinet.setTelephone(cabinetForm.getTelephone());
+            cabinet.setAdresse(cabinetForm.getAdresse());
+            cabinet.setMatriculefiscale(cabinetForm.getMatriculefiscale());
+            cabinet.setName(cabinetForm.getName());
+            cabinet.setSpecialite(cabinetForm.getSpecialite());
+            if (cabinetForm.getImage() != null) {
+                cabinet.setImage(cabinetForm.getImage().getBytes());
+            }
 
-            return cabinetRepository.save(updatedCabinet);
+            cabinet.setVille(cabinetForm.getVille());
+
+            List<HoraireTravail> horaires = cabinetForm.getHoraires();
+            List<HoraireTravail> oldHoraires = cabinet.getHoraires();
+            if (oldHoraires != null && !oldHoraires.isEmpty()) {
+                horaireRepository.deleteAll(oldHoraires);
+            }
+            for (HoraireTravail horaire : horaires) {
+                horaire.setCabinet(cabinet);
+                horaireRepository.save(horaire);
+            }
+
+            cabinet.setHoraires(horaires);
+            Cabinet updatedCabinet = cabinetRepository.save(cabinet);
+            return updatedCabinet;
         } else {
-            return null;
+            throw new NoSuchElementException("Le cabinet avec l'ID " + id + " n'existe pas.");
         }
     }
 
     @Override
-    public Cabinet add(Cabinet cabinet) {
-        return cabinetRepository.save(cabinet);
-    }
-
-    @Override
-    public void delete(Long id) {
-
-        cabinetRepository.deleteById(id);
+    public void supprimerCabinet(Long id) {
+        // Vérifie si le cabinet existe
+        Optional<Cabinet> optionalCabinet = cabinetRepository.findById(id);
+        if (optionalCabinet.isPresent()) {
+            List<HoraireTravail> horaires = optionalCabinet.get().getHoraires();
+            if (horaires != null && !horaires.isEmpty()) {
+                horaireRepository.deleteAll(horaires);
+            }
+            cabinetRepository.deleteById(id);
+        } else {
+            throw new NoSuchElementException("Le cabinet avec l'ID " + id + " n'existe pas.");
+        }
     }
 
     public List<Cabinet> findCabinetByName(String name) {
@@ -85,26 +100,30 @@ public class CabinetServiceImpl implements CabinetService {
     }
 
     @Override
-    public Cabinet AjouterCabinet(CabinetForm cabinetForm) {
+    public Cabinet AjouterCabinet(CabinetForm cabinetForm) throws IOException {
+
         Cabinet cabinet = new Cabinet();
         cabinet.setTelephone(cabinetForm.getTelephone());
         cabinet.setAdresse(cabinetForm.getAdresse());
         cabinet.setMatriculefiscale(cabinetForm.getMatriculefiscale());
         cabinet.setName(cabinetForm.getName());
         cabinet.setSpecialite(cabinetForm.getSpecialite());
+        cabinet.setImage(cabinetForm.getImage().getBytes());
+        cabinet.setVille(cabinetForm.getVille());
         cabinet.setHoraires(cabinetForm.getHoraires());
         Cabinet savedCabinet = cabinetRepository.save(cabinet);
         List<HoraireTravail> horaires = cabinetForm.getHoraires();
-        // Association des horaires au cabinet enregistré
+
         for (HoraireTravail horaire : horaires) {
             horaire.setCabinet(savedCabinet);
             horaireRepository.save(horaire);
         }
-        // Mettre à jour le cabinet avec les horaires associés
+
         savedCabinet.setHoraires(horaires);
         cabinetRepository.save(savedCabinet);
 
         return savedCabinet;
 
     }
+
 }

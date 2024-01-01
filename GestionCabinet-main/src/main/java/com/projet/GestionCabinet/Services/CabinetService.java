@@ -1,5 +1,6 @@
 package com.projet.GestionCabinet.Services;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.projet.GestionCabinet.DTO.CabinetForm;
@@ -11,13 +12,11 @@ public interface CabinetService {
 
     public Cabinet findById(Long id);
 
-    public Cabinet update(Long id, Cabinet cabinet);
+    public Cabinet modifierCabinet(Long id, CabinetForm cabinetForm) throws IOException;
 
-    public Cabinet add(Cabinet cabinet);
+    public Cabinet AjouterCabinet(CabinetForm cabinetForm) throws IOException;
 
-    public Cabinet AjouterCabinet(CabinetForm cabinetForm);
-
-    public void delete(Long id);
+    public void supprimerCabinet(Long id);
 
     public List<Cabinet> findCabinetByName(String name);
 
