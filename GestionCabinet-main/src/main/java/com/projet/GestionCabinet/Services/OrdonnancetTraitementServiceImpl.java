@@ -52,5 +52,13 @@ public class OrdonnancetTraitementServiceImpl implements OrdonnancetTraitementSe
         ordonnaceRep.deleteById(id);
     }
 
+    //ajout
+    @Override
+    public List<OrdonnancetTraitement> getOrdonnanceByPatientId(Long id) {
+        return ordonnaceRep.getOrdonnanceByPatientId(id);
+    }
+
+    
+
     
 }
